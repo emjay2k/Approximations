@@ -1,3 +1,30 @@
+# How to use
+
+Just look at the following code example on how to use the functions. I think it doesn't need more explaining than that.
+
+```
+#include <iostream>
+#include "logapprox.h"
+
+// hello world example
+int main() {
+    double x = 2;
+    // most accurate version
+    double log2_y    = fastLog2p6<double>(x);               // log2(x)
+    double log10_y   = fastLog10(x, &fastLog2p6<double>);   // log10(x)
+    double ln_y      = fastLn(x, &fastLog2p6<double>);      // ln(x)
+
+    // print results
+    std::cout << "log2(" << x << ")  = " << log2_y << std::endl;
+    std::cout << "log10(" << x << ") = " << log10_y << std::endl;
+    std::cout << "ln(" << x << ")    = " << ln_y << std::endl;
+
+    return 0;
+}
+```
+
+If you want to know what this can be used for, read on.
+
 # Fast approximation of logarithm for double precision
 
 This project is about an approach to logarithm approximation for <u>double precision</u> floating point values. Now you may have already found a lot such attempts, most claim to be much faster than this approach will be for you, but what most of those approaches have in common is their aim at single precision floating point values. So if for some reason single precision is not enough for you, read on.
