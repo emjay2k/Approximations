@@ -8,6 +8,8 @@
 #ifndef SRC_LOGAPPROX_H_
 #define SRC_LOGAPPROX_H_
 
+#include <cmath>
+#include <limits>
 #include <boost/config.hpp>
 
 // inspired by the paper "New close form approximations of ln(1+x) by Khattri
@@ -17,7 +19,7 @@
 // speedup over log2_avx implementation ~ 3;
 // Max error: ~0.00147 (accurate to 9 bits)
 // Theoretical max error from the extreme values of the function: 0.001464579127038346
-template <class T>
+template <typename T>
 inline T fastLog2p1(const T value) {
     const T a = 1.4767235475800453;
     const T b = -1.477808113688585;
@@ -45,7 +47,7 @@ inline T fastLog2p1(const T value) {
 // speedup over log2_avx implementation ~ 2.7;
 // Max error: ~3.46e-06 (accurate to 18 bits)
 // Theoretical max error from the extreme values of the function: 3.458795617805599e-06
-template <class T>
+template <typename T>
 inline T fastLog2p2(const T value) {
     const T a = 1.9127166899499954;
     const T b = -0.68851400593499545;
@@ -76,7 +78,7 @@ inline T fastLog2p2(const T value) {
 // speedup over log2_avx implementation ~ 2.2;
 // Max error: ~7.79e-09 (accurate to almost 27 bits)
 // Theoretical max error from the extreme values of the function: 7.786322031577697e-09
-template <class T>
+template <typename T>
 inline T fastLog2p3(const T value) {
     const T a = 1.1098414161667869;
     const T b = 1.4491119665946153;
@@ -110,7 +112,7 @@ inline T fastLog2p3(const T value) {
 // speedup over log2_avx implementation ~ 2;
 // Max error: ~1.77e-11 (accurate to almost 36 bits)
 // Theoretical max error from the extreme values of the function: 1.772559876656032e-11
-template <class T>
+template <typename T>
 inline T fastLog2p4(const T value) {
     const T a = 0.59329970349044314;
     const T b = 2.3979646338966889;
@@ -149,7 +151,7 @@ inline T fastLog2p4(const T value) {
 // speedup over log2_avx implementation ~ 1.7;
 // Max error: ~1.92e-14 (accurate to 45 bits)
 // Theoretical max error from the extreme values of the function: 1.887379141862766e-14
-template <class T>
+template <typename T>
 inline T fastLog2p5(const T value) {
     const T a = 1;
     const T b = 7.71936522214048448375934;
@@ -190,7 +192,7 @@ inline T fastLog2p5(const T value) {
 // Max error: 5.90e-16 (accurate to 50 bits)
 // Theoretical max error from the extreme values of the function: 2.721114280694278e-16
 // maxError: 4.44089209850062616169e-16, averageError: 9.42839491433090812849e-17
-template <class T>
+template <typename T>
 inline T fastLog2p6(const T value) {
     const T a = 1.000000000000000000000e+00L;
     const T b = 1.264421020196026468341e+01L;
@@ -226,7 +228,7 @@ inline T fastLog2p6(const T value) {
     }
 }
 
-template <class T>
+template <typename T>
 inline T fastLn(const T value, T (*log2func)(const T))
 {
     const T g_rlog2_e = 0.693147180559945309417232121458176568075500134360255254120L;
@@ -234,7 +236,7 @@ inline T fastLn(const T value, T (*log2func)(const T))
     return g_rlog2_e * log2func(value);
 }
 
-template <class T>
+template <typename T>
 inline T fastLog10(const T value, T(*log2func)(const T))
 {
     const T g_rlog2_10 = 0.301029995663981195213738894724493026768189881462108541310L;
