@@ -149,22 +149,22 @@ inline T fastLog2p4(const T value) {
 // population of differential evolution algorithm for further optimization regarding max error.
 // Final evaluation was done using 1e11 values from [1.0, 2.0]
 // speedup over log2_avx implementation ~ 1.7;
-// Max error: ~1.92e-14 (accurate to 45 bits)
-// Theoretical max error from the extreme values of the function: 1.887379141862766e-14
+// Max error: ~1.85e-14 (accurate to 45 bits)
+// Theoretical max error from the extreme values of the function: 1.820765760385257e-14
 template <typename T>
 inline T fastLog2p5(const T value) {
-    const T a = 1;
-    const T b = 7.71936522214048448375934;
-    const T c = 3.86819598045858414891995;
-    const T d = -8.62625591215740072925655;
-    const T e = -3.75643884533287897298237;
-    const T f = -0.20486644510896143134282;
-    const T g = 0.163694582050043557774899;
-    const T h = 2.92653202255549693688863;
-    const T i = 8.32056953375982644161013;
-    const T j = 5.87824918118857908666541;
-    const T k = 1.03190040649530079264196;
-    const T l = 0.0288076245100893947592713;
+    const T a = 1.000000000000000000000e+00;
+    const T b = 7.724129062840519033273e+00;
+    const T c = 3.878748300736706067227e+00;
+    const T d = -8.633584487586309919038e+00;
+    const T e = -3.763821035138447346213e+00;
+    const T f = -2.054718408527802797625e-01;
+    const T g = 1.636794214704399841320e-01;
+    const T h = 2.927552384822291742239e+00;
+    const T i = 8.327974821567529772892e+00;
+    const T j = 5.887266723437919679895e+00;
+    const T k = 1.034256519609611402188e+00;
+    const T l = 2.889807696644808646114e-02;
 
     if(BOOST_UNLIKELY(!std::isfinite(value))) {
         return value == std::numeric_limits<T>::infinity() ? value : nan("1");
@@ -189,25 +189,24 @@ inline T fastLog2p5(const T value) {
 // parameters were fitted using ceres on 38 values from range [0.5,1.0] and preliminary evaluated with 1e7 values from
 // the same range. Final evaluation was done using 1e11 values from [1.0,2.0]
 // speedup over log2_avx implementation ~ 1.6;
-// Max error: 5.90e-16 (accurate to 50 bits)
-// Theoretical max error from the extreme values of the function: 2.721114280694278e-16
-// maxError: 4.44089209850062616169e-16, averageError: 9.42839491433090812849e-17
+// Max error: 5.73e-16 (accurate to 50 bits)
+// Theoretical max error from the extreme values of the function: 1.140580685454751e-16
 template <typename T>
 inline T fastLog2p6(const T value) {
     const T a = 1.000000000000000000000e+00L;
-    const T b = 1.264421020196026468341e+01L;
-    const T c = 2.097757281182429878186e+01L;
-    const T d = -1.096689803557884168583e+01L;
-    const T e = -1.931053288761708230936e+01L;
-    const T f = -4.197137193704804758454e+00L;
-    const T g = -1.472148968838493110489e-01L;
-    const T h = 1.515951847105251049097e-01L;
-    const T i = 3.923015269365503598920e+00L;
-    const T j = 1.753784228757662333464e+01L;
-    const T k = 2.219034855172147757685e+01L;
-    const T l = 8.839440525270575221839e+00L;
-    const T m = 9.965678875171709583114e-01L;
-    const T n = 1.940841159387440492679e-02L;
+    const T b = 1.268415661999539878479e+01L;
+    const T c = 2.113404189541518007900e+01L;
+    const T d = -1.096780633851080466457e+01L;
+    const T e = -1.945948524176642990824e+01L;
+    const T f = -4.241771817238755737378e+00L;
+    const T g = -1.491351178945869715431e-01L;
+    const T h = 1.515072667524440808151e-01L;
+    const T i = 3.930936965120734871704e+00L;
+    const T j = 1.761700191252228364647e+01L;
+    const T k = 2.234352453493684720343e+01L;
+    const T l = 8.920637882427030262988e+00L;
+    const T m = 1.007889789099811306272e+00L;
+    const T n = 1.966898367167627115215e-02L;
 
     if(BOOST_UNLIKELY(!std::isfinite(value))) {
         return value == std::numeric_limits<T>::infinity() ? value : nan("1");

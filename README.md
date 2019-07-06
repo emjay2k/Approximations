@@ -85,7 +85,7 @@ Remember: single precision accuracy is approximately 1e-7 (23 bits) and double p
 
 ![Accuracy in bits for increasing n](doc/plot_bits.svg)
 
-This means that n=3 beats single precision accuracy and n=6 almost reaches double precision, which it could exceed if there were no numerical issues. I found a parameter combination that used with long double values is actually more accurate. But unfortunately using long double for approximation of double accuracy is not an option performance-wise.
+This means that n=3 beats single precision accuracy and n=6 almost reaches double precision, which it could exceed if there were no numerical issues. But unfortunately using long double for approximation of double accuracy is not an option performance-wise.
 
 The approximation accuracy increases exponentially with n. The numbers were determined using 1e12 uniformly distributed samples from the interval [1,2]. Remember: the graph has a logarithmic scale for y. Now follow the usual difference to real value plots.
 
@@ -101,7 +101,8 @@ The approximation accuracy increases exponentially with n. The numbers were dete
 
 ![For n=6](doc/plot_p6-log2.png)
 
-From the discrete value areas in the last plot you can see that the limit of double precision is very close.
+From the discrete value areas in the last plot you can see that the limit of double precision is very close. The same parameter combination used with long double values is actually more accurate than double precision:
+![For n=5](doc/plot_p6ld-log2.svg)
 
 ### Performance
 
