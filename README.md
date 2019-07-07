@@ -75,7 +75,7 @@ All experiments were run on a
 
 - AMD Ryzen 5 2600
 - Linux
-- Compiler g++ 7.4.0 (-O3 -march=native -mavx).
+- Compiler g++ 7.4.0 (-O3 -march=native).
 
 It would be interesting to see the difference between various compilers and architectures, but I do not have the time to compile, run and analyze it all. The code contains a validation routine, which you can use to find out for yourself for your actual setting. Using -ffast-math will get you more speed at the cost of a little bit of accuracy for n=6. 
 
@@ -101,16 +101,29 @@ The approximation accuracy increases exponentially with n. The numbers were dete
 
 ![For n=6](doc/plot_p6-log2.png)
 
-From the discrete value areas in the last plot you can see that the limit of double precision is very close. The same parameter combination used with long double values is actually more accurate than double precision:
+From the discrete value areas in the last plot you can see that the limit of double precision is very close. You can see that with x close to 1, the values are quite accurate. The reason is: if you determine x^n with a value close to 1, then you will get a result close to 1. For 0.5 however, the value is 0.5^n, which is 2^-n. For simplicity let's assume the parameters would just all be 1. This would give you the equation (2^-6 + 2^-5 + 2^-4 + 2^-3 + 2^-2 + 2^-1 + 1) in both parts of the fraction. The problem with this is, that all these values have to be added to one another in the end and thus be represented by a single double precision number somewhere close to 2.0 (in this simplified equation). Regarding each individual part of that sum, the precision is quite high. But the precision of the sum is only the precision the sum can be represented with. So the smaller the part added to the sum is, the more of its originally available bits get cut off (I reduced the precision to 7 decimals for a simpler visualization).
+
+```
+x^0: 1.0yyyyyy
+x^1: 0.50yyyyyZ
+x^2: 0.250yyyyZZ
+x^3: 0.1250yyyZZZ
+x^4: 0.06250yyZZZZ
+x^5: 0.031250yZZZZZ
+x^6: 0.0156250ZZZZZZ
+sum: 2.0yyyyyy
+```
+
+The information described by the Z positions is in large parts lost as part of the sum. This is only critical for values that actually need those bits in their representation, so 0.5 is a bad example in that regard, but values that cannot be represented within the precision of the sum, definitely have this issue. The closer x gets to 1, the more the situation improves because the values added to one another are similarly large and thus all have a similar precision. The same parameter combination used with long double values is actually more accurate than double precision (see below).
 ![For n=5](doc/plot_p6ld-log2.svg)
 
 ### Performance
 
-The performance was measured computing 1e9 sequential logarithms in a loop for each of the algorithms. Baseline is the log2() function call for double precision of the gnu standard library. In addition the speedup was also measured on a raspberry pi 3 (arm).
+The performance was measured computing 1e9 different logarithms in a loop for each of the algorithms. Baseline is the log2() function call for double precision of the gnu standard library. In addition the speedup was also measured on a raspberry pi 3 (arm).
 
 ![Speedup](doc/plot_speed.svg)
 
-Maximum speedup for x64 is <3 but comparable accuracy will only get you a speedup of <1.5. If you are willing to settle for a similar accuracy as single precision offers (n=3), then you can at least be twice as fast. The situation improves a bit if you compile with -ffast-math. For n=6 a speedup of 1.67 is possible, with practically no drop in accuracy. However all the fancy special cases like +-inf, NaN etc. will not be handled properly, which can be a pain to debug.
+Maximum speedup for x64 is <3.0 but comparable accuracy will only get you a speedup of <1.6. If you are willing to settle for a similar accuracy as single precision offers (n=3), then you can be at least twice as fast. The situation does not improve if you compile with -ffast-math, because standard library log2() also gets accelerated this way (by ignoring special cases). However all the fancy special cases like +-inf, NaN etc. will not be handled properly, which can be a pain to debug, so this is not recommended.
 
 Interestingly the approximation for n=3 is faster (and more accurate) than single precision log() on the raspberry pi 3, but in general the speedup there is lower than on x64.
 
@@ -121,7 +134,7 @@ The speedup is not as big as I hoped for, but the main reasons for that is:
 1. The existing log2 implementation in standard libraries is very well optimized already.
 2. [frexp](https://en.cppreference.com/w/cpp/numeric/math/frexp), which is the only platform independent and standard compliant way of getting **E** and **M**, is responsible for the functions being so slow. You could do that one faster for specific platforms (and by ignoring special cases), but that was not the goal. It takes about 2/3 of the execution time for n=1. This gets a little better with bigger n (because the functions do more other computations), but so long as you use frexp, speedup is limited to 4.
 
-Interestingly n=5 leads to a slower approximation than n=6. This was not further investigated, probably  g++ could optimize the later better (you can use objdump -d to verify if you like).
+Interestingly n=5 leads to a slower approximation than n=6. This was not further investigated, probably g++ could optimize the later better (you can use objdump -d to verify if you like).
 
 ### Code sample
 

@@ -134,9 +134,9 @@ inline T fastLog2p4(const T value) {
         T dM3 = dM * dM2;
         T dM4 = dM2 * dM2;
 
-        T x = 1.0/(f*dM4 + g*dM3 + h*dM2 + i*dM + j);
+        T x = 1.0/(((f*dM4 + h*dM2) + (g*dM3 + i*dM)) + j);
 
-        return iExp + x * (a*dM4 + b*dM3 + c*dM2 + d*dM + e);
+        return iExp + x * (((a*dM4 + c*dM2) + (b*dM3 + d*dM)) + e);
     } else {
         return value == 0 ? -std::numeric_limits<T>::infinity() : -std::nan("1");
     }
@@ -150,21 +150,21 @@ inline T fastLog2p4(const T value) {
 // Final evaluation was done using 1e11 values from [1.0, 2.0]
 // speedup over log2_avx implementation ~ 1.7;
 // Max error: ~1.85e-14 (accurate to 45 bits)
-// Theoretical max error from the extreme values of the function: 1.820765760385257e-14
+// Theoretical max error from the extreme values of the function: 1.798561299892754e-14
 template <typename T>
 inline T fastLog2p5(const T value) {
     const T a = 1.000000000000000000000e+00;
-    const T b = 7.724129062840519033273e+00;
-    const T c = 3.878748300736706067227e+00;
-    const T d = -8.633584487586309919038e+00;
-    const T e = -3.763821035138447346213e+00;
-    const T f = -2.054718408527802797625e-01;
-    const T g = 1.636794214704399841320e-01;
-    const T h = 2.927552384822291742239e+00;
-    const T i = 8.327974821567529772892e+00;
-    const T j = 5.887266723437919679895e+00;
-    const T k = 1.034256519609611402188e+00;
-    const T l = 2.889807696644808646114e-02;
+    const T b = 7.725948865520557262698e+00;
+    const T c = 3.881945342604792070773e+00;
+    const T d = -8.636342612430562226677e+00;
+    const T e = -3.765931586659196916855e+00;
+    const T f = -2.056200090358520915501e-01;
+    const T g = 1.636721511729113398559e-01;
+    const T h = 2.927957859861910261401e+00;
+    const T i = 8.330559374022366014856e+00;
+    const T j = 5.890032885395497075365e+00;
+    const T k = 1.034893176470858655591e+00;
+    const T l = 2.891963124989086267314e-02;
 
     if(BOOST_UNLIKELY(!std::isfinite(value))) {
         return value == std::numeric_limits<T>::infinity() ? value : nan("1");
@@ -176,9 +176,9 @@ inline T fastLog2p5(const T value) {
         T dM4 = dM2 * dM2;
         T dM5 = dM2 * dM3;
 
-        T x = 1.0/(g*dM5 + h*dM4 + i*dM3 + j*dM2 + k*dM + l);
+        T x = 1.0/((g*dM5 + l) + (h*dM4 + j*dM2) + (i*dM3 + k*dM));
 
-        return iExp + x * (a*dM5 + b*dM4 + c*dM3 + d*dM2 + e*dM + f);
+        return iExp + x * ((a*dM5 + f) + (b*dM4 + d*dM2) + c*dM3 + e*dM);
     } else {
         return value == 0 ? -std::numeric_limits<T>::infinity() : -std::nan("1");
     }
@@ -189,24 +189,24 @@ inline T fastLog2p5(const T value) {
 // parameters were fitted using ceres on 38 values from range [0.5,1.0] and preliminary evaluated with 1e7 values from
 // the same range. Final evaluation was done using 1e11 values from [1.0,2.0]
 // speedup over log2_avx implementation ~ 1.6;
-// Max error: 5.73e-16 (accurate to 50 bits)
-// Theoretical max error from the extreme values of the function: 1.140580685454751e-16
+// Max error: 5.00e-16 (accurate to 50 bits)
+// Theoretical max error from the extreme values of the function: 6.498986705940505e-17
 template <typename T>
 inline T fastLog2p6(const T value) {
     const T a = 1.000000000000000000000e+00L;
-    const T b = 1.268415661999539878479e+01L;
-    const T c = 2.113404189541518007900e+01L;
-    const T d = -1.096780633851080466457e+01L;
-    const T e = -1.945948524176642990824e+01L;
-    const T f = -4.241771817238755737378e+00L;
-    const T g = -1.491351178945869715431e-01L;
-    const T h = 1.515072667524440808151e-01L;
-    const T i = 3.930936965120734871704e+00L;
-    const T j = 1.761700191252228364647e+01L;
-    const T k = 2.234352453493684720343e+01L;
-    const T l = 8.920637882427030262988e+00L;
-    const T m = 1.007889789099811306272e+00L;
-    const T n = 1.966898367167627115215e-02L;
+    const T b = 1.251649209001242901707e+01L;
+    const T c = 2.046583854860732643033e+01L;
+    const T d = -1.097536826489419503616e+01L;
+    const T e = -1.881965876655596403566e+01L;
+    const T f = -4.046684236630626152476e+00L;
+    const T g = -1.406193705389736370304e-01L;
+    const T h = 1.518692933639071429575e-01L;
+    const T i = 3.897795033656223484542e+00L;
+    const T j = 1.728188727732104723600e+01L;
+    const T k = 2.168720176727976678421e+01L;
+    const T l = 8.568477446142038544963e+00L;
+    const T m = 9.581795852523320444760e-01L;
+    const T n = 1.851054408942580734032e-02L;
 
     if(BOOST_UNLIKELY(!std::isfinite(value))) {
         return value == std::numeric_limits<T>::infinity() ? value : nan("1");
@@ -219,9 +219,9 @@ inline T fastLog2p6(const T value) {
         T dM5 = dM2 * dM3;
         T dM6 = dM3 * dM3;
 
-        T x = 1.0/(h*dM6 + i*dM5 + j*dM4 + k*dM3 + l*dM2 + m*dM + n);
+        T x = 1.0/((((h*dM6 + n) + (i*dM5 + m*dM)) + (j*dM4 + l*dM2)) + k*dM3);
 
-        return iExp + x * (a*dM6 + b*dM5 + c*dM4 + d*dM3 + e*dM2 + f*dM + g);
+        return iExp + x * (((((a*dM6 + g) + (c*dM4 + d*dM3)) + b*dM5) + f*dM) + e*dM2);
     } else {
         return value == 0 ? -std::numeric_limits<T>::infinity() : -std::nan("1");
     }

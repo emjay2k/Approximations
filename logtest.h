@@ -20,7 +20,53 @@ struct MaxErrorFuture {
     double dMaxError[7] = { 0 };
 };
 
-template <class T>
+template <typename T>
+static void validateWorkerP5(size_t uNumSamples, size_t uStart, size_t uEnd, std::promise<MaxErrorFuture> *promiseObj) {
+    T dStepSize = 1.0/static_cast<T>(uNumSamples);
+
+    MaxErrorFuture retVal;
+    double *dMaxError = &retVal.dMaxError[0];
+    // generate data for mantissa only (since exponent is perfect)
+    // actual representation is from [1,2], so we sample that range
+    for(size_t i = uStart; i < uEnd; ++i) {
+        T x = 1.0 + static_cast<T>(i) * dStepSize;
+        T dPrecise = log2(x);
+        T dApprox = fastLog2p5<T>(x);
+
+        double dDiff = static_cast<double>(fabs(dPrecise - dApprox));
+        if(dDiff > dMaxError[0])
+        {
+            dMaxError[0] = dDiff;
+        }
+    }
+
+    promiseObj->set_value(std::move(retVal));
+}
+
+template <typename T>
+static void validateWorkerP6(size_t uNumSamples, size_t uStart, size_t uEnd, std::promise<MaxErrorFuture> *promiseObj) {
+    T dStepSize = 1.0/static_cast<T>(uNumSamples);
+
+    MaxErrorFuture retVal;
+    double *dMaxError = &retVal.dMaxError[0];
+    // generate data for mantissa only (since exponent is perfect)
+    // actual representation is from [1,2], so we sample that range
+    for(size_t i = uStart; i < uEnd; ++i) {
+        T x = 1.0 + static_cast<T>(i) * dStepSize;
+        T dPrecise = log2(x);
+        T dApprox = fastLog2p6<T>(x);
+
+        double dDiff = static_cast<double>(fabs(dPrecise - dApprox));
+        if(dDiff > dMaxError[0])
+        {
+            dMaxError[0] = dDiff;
+        }
+    }
+
+    promiseObj->set_value(std::move(retVal));
+}
+
+template <typename T>
 static void validateWorker(size_t uNumSamples, size_t uStart, size_t uEnd, std::promise<MaxErrorFuture> *promiseObj) {
     T dStepSize = 1.0/static_cast<T>(uNumSamples);
 
@@ -68,18 +114,18 @@ static void validateWorker(size_t uNumSamples, size_t uStart, size_t uEnd, std::
         {
             dMaxError[5] = dDiff;
         }
-        dApprox = log2f(x);
-        dDiff = fabs(dPrecise - dApprox);
-        if(dDiff > dMaxError[6])
-        {
-            dMaxError[6] = dDiff;
-        }
+//        dApprox = log2f(x);
+//        dDiff = fabs(dPrecise - dApprox);
+//        if(dDiff > dMaxError[6])
+//        {
+//            dMaxError[6] = dDiff;
+//        }
     }
 
     promiseObj->set_value(std::move(retVal));
 }
 
-template <class T>
+template <typename T>
 static inline void validateAccuracy(size_t uNumSamples, const size_t uNumThreads=1)
 {
     // threads, promises and futures
@@ -122,7 +168,7 @@ static inline void validateAccuracy(size_t uNumSamples, const size_t uNumThreads
     std::cout << std::endl;
 }
 
-template <class T>
+template <typename T>
 static inline void validatePerformance(size_t uNumSamples) {
     std::vector<T> values(uNumSamples);
 
