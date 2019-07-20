@@ -149,22 +149,22 @@ inline T fastLog2p4(const T value) {
 // population of differential evolution algorithm for further optimization regarding max error.
 // Final evaluation was done using 1e11 values from [1.0, 2.0]
 // speedup over log2_avx implementation ~ 1.7;
-// Max error: ~1.85e-14 (accurate to 45 bits)
-// Theoretical max error from the extreme values of the function: 1.798561299892754e-14
+// Max error: ~1.80e-14 (accurate to 45 bits)
+// Theoretical max error from the extreme values of the function: 1.765254609153999e-14
 template <typename T>
 inline T fastLog2p5(const T value) {
     const T a = 1.000000000000000000000e+00;
-    const T b = 7.725948865520557262698e+00;
-    const T c = 3.881945342604792070773e+00;
-    const T d = -8.636342612430562226677e+00;
-    const T e = -3.765931586659196916855e+00;
-    const T f = -2.056200090358520915501e-01;
-    const T g = 1.636721511729113398559e-01;
-    const T h = 2.927957859861910261401e+00;
-    const T i = 8.330559374022366014856e+00;
-    const T j = 5.890032885395497075365e+00;
-    const T k = 1.034893176470858655591e+00;
-    const T l = 2.891963124989086267314e-02;
+    const T b = 7.732354604084914484474e+00;
+    const T c = 3.893816323736673190581e+00;
+    const T d = -8.646069665182267272030e+00;
+    const T e = -3.773895413775759433150e+00;
+    const T f = -2.062058488638166542373e-01;
+    const T g = 1.636476193217775432220e-01;
+    const T h = 2.929373781304793311620e+00;
+    const T i = 8.339836924158730013801e+00;
+    const T j = 5.900277160781167040682e+00;
+    const T k = 1.037334812091420754854e+00;
+    const T l = 2.900560762872882170083e-02;
 
     if(BOOST_UNLIKELY(!std::isfinite(value))) {
         return value == std::numeric_limits<T>::infinity() ? value : nan("1");
@@ -189,7 +189,7 @@ inline T fastLog2p5(const T value) {
 // parameters were fitted using ceres on 38 values from range [0.5,1.0] and preliminary evaluated with 1e7 values from
 // the same range. Final evaluation was done using 1e11 values from [1.0,2.0]
 // speedup over log2_avx implementation ~ 1.6;
-// Max error: 5.00e-16 (accurate to 50 bits)
+// Max error: 5.10e-16 (accurate to 50 bits)
 // Theoretical max error from the extreme values of the function: 6.498986705940505e-17
 template <typename T>
 inline T fastLog2p6(const T value) {
